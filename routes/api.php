@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostPublicController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,8 +18,6 @@ use App\Http\Controllers\PostController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 //Route::post('/login','App\Http\Controllers\AuthController@login');
-Route::post('/posts',[PostController::class,'store']);
-
 
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
@@ -28,14 +26,16 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/user',[AuthController::class, 'user']);
     Route::post('/logout',[AuthController::class, 'logout']);
 
-    //Post
-    Route::get('/posts',[PostController::class, 'index']); // get all post
-    //Route::post('/posts',[PostController::class,'store']); //create post
-    Route::get('/posts/{id}',[PostController::class,'show']); // get single post
-    Route::put('/posts/{id}',[PostController::class,'update']); //update post
-    Route::delete('/posts/{id}',[PostController::class,'destroy']); //delete post
-
-
+   // Route::get('/posts',[PostController::class, 'index']); // get all post
+   // Route::post('/posts',[PostController::class,'store']); //create post
+   // Route::get('/posts/{id}',[PostController::class,'show']); // get single post
+   // Route::put('/posts/{id}',[PostController::class,'update']); //update post
+   // Route::delete('/posts/{id}',[PostController::class,'destroy']); //delete post
 });
 
+Route::get('/posts',[PostPublicController::class, 'index']);
+Route::post('/posts',[PostPublicController::class,'store']);
+Route::get('/posts/{id}',[PostPublicController::class,'show']);
+Route::put('/posts/{id}',[PostPublicController::class,'update']);
+Route::delete('/posts/{id}',[PostPublicController::class,'delete']);
 

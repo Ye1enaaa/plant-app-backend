@@ -19,16 +19,19 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6'
         ]);
+
         //create user
         $user = User::create([
             'name'=> $attrs['name'],
             'email'=> $attrs['email'],
             'password'=> bcrypt($attrs['password'])
         ]);
+
         //return user and token
+        $token = $user->createToken('secret')->plainTextToken;
         return response([
             'user'=> $user,
-            'token' => $user->createToken('secret')->plainTextToken
+            'token' => $token
         ]);
     }
     
@@ -76,6 +79,7 @@ class AuthController extends Controller
     }
 
     //get user details
+    
     public function user()
     {
         return response([
