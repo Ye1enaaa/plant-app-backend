@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PostPublic;
+use Illuminate\Support\Facades\Storage;
 
 class PostPublicController extends Controller
 {
@@ -14,9 +15,14 @@ class PostPublicController extends Controller
             'body' => 'required|string'
         ]);
 
+        if ($request->hasFile('image')) {
+            $request->file('image')->store('images');
+        }
+
         $post = PostPublic::create([
             'plantname' => $attrs['plantname'],
-            'body' => $attrs['body']
+            'body' => $attrs['body'],
+            'image' => Storage::putFile('images', $request->file('image'))
         ]);
 
         return response([
@@ -35,7 +41,8 @@ class PostPublicController extends Controller
         ], 200);
     }
 
-    public function show(Request $request, $id){
+    public function show(Request $request, $id)
+    {
        // $postshow = PostPublic::find($id);
 
         return response([
@@ -48,16 +55,21 @@ class PostPublicController extends Controller
     public function update(Request $request, $id){
         $attrs = $request -> validate([
             'plantname' => 'nullable|string',
-            'body' => 'nullable|string'
+            'body' => 'nullable|string',
         ]);
         
+        if ($request->hasFile('image')) {
+            $request->file('image')->store('images');
+            $attrs['image'] = Storage::putFile('images', $request->file('image'));
+        }
+
         $postshow = PostPublic::find($id);
         if($postshow){
             $postshow->update($attrs);
 
             return response()-> json([
                 'message' => 'Post Updated',
-                'post' => $postshow
+                'post' => $postshow,
             ], 200);
         }else{
             return response()->json([
@@ -67,8 +79,8 @@ class PostPublicController extends Controller
         }
     }
 
-    public function delete(Request $request, $id){
-        
+    public function delete(Request $request, $id)
+    {    
         $postdel = PostPublic::find($id);
         
         if($postdel){
@@ -86,3 +98,4 @@ class PostPublicController extends Controller
         }
     }
 }
+

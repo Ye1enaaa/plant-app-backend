@@ -12,7 +12,7 @@ class PostPublic extends Model
     protected $fillable = [
         'plantname',
         'body',
-        'image'
+        'image',
     ];
 
     public $timestamps = false;
