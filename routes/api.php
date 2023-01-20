@@ -21,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    
+
     //User
     Route::get('/user',[AuthController::class, 'user']);
     Route::post('/logout',[AuthController::class, 'logout']);
@@ -39,3 +39,4 @@ Route::get('/posts/{id}',[PostPublicController::class,'show']);
 Route::put('/posts/{id}',[PostPublicController::class,'update']);
 Route::delete('/posts/{id}',[PostPublicController::class,'delete']);
 
+Route::get('storage/{path}', [PostPublicController::class,'show1'])->where('path', '.+');

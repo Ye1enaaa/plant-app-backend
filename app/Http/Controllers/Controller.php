@@ -11,20 +11,5 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    //} not final function for image
-public function saveImage($image, $path = 'public')
-    {
-        if(!$image)
-        {
-            return null;
-        }
 
-        $filename = time().'.png';
-        // save image
-        Storage::disk($path)->put($filename, base64_decode($image));
-
-        //return the path
-        // Url is the base url exp: localhost:8000
-        return URL::to('/').'/storage/'.$path.'/'.$filename;
-    }
 }

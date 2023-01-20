@@ -22,7 +22,7 @@ class PostPublicController extends Controller
         $post = PostPublic::create([
             'plantname' => $attrs['plantname'],
             'body' => $attrs['body'],
-            'image' => Storage::putFile('images', $request->file('image'))
+            'image' => Storage::putFile('', $request->file('image'))
         ]);
 
         return response([
@@ -34,7 +34,7 @@ class PostPublicController extends Controller
     public function index(Request $request)
     {
         $posts = PostPublic::all();
-        
+
         return response([
             'message' => "Post retrieved",
             'post' => $posts
@@ -52,12 +52,18 @@ class PostPublicController extends Controller
 
     }
 
+
+    public function show1($path)
+        {
+            return response()->file(storage_path("app/images/{$path}"));
+        }
+
     public function update(Request $request, $id){
         $attrs = $request -> validate([
             'plantname' => 'nullable|string',
             'body' => 'nullable|string',
         ]);
-        
+
         if ($request->hasFile('image')) {
             $request->file('image')->store('images');
             $attrs['image'] = Storage::putFile('images', $request->file('image'));
@@ -80,9 +86,9 @@ class PostPublicController extends Controller
     }
 
     public function delete(Request $request, $id)
-    {    
+    {
         $postdel = PostPublic::find($id);
-        
+
         if($postdel){
             $postdel->delete();
 
